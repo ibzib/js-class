@@ -2,37 +2,79 @@
 <html>
     <head>
         <title>To Do List</title>
+        <style>
+        html, body {
+            background: slategray;
+            background: linear-gradient(to bottom right, slategray, midnightblue);
+            height: 100%;
+            font-family: sans-serif;
+            color: white;
+        }
+        table {
+            border: 1px solid;
+            border-collapse: collapse;
+            background-color: #333333;
+        }
+        td, th {
+            text-align: center;
+        }
+        th {
+            border-bottom: 1px solid;
+        }
+        #wrapper {
+            width: 75%;
+            margin: auto;
+        }
+        input {
+            font-family: inherit;
+            font-size: inherit;
+        }
+        </style>
         <script>
-            var shown = false;
             function addItem() {
-                if (shown) {
-                    document.getElementById("newItem").style.display = "none";
-                    shown = false;
-                    var form = document.getElementById("newItem");
-                    var item = document.createElement("li");
-                    item.innerHTML = form["date"].value + " " + form["time"].value + " " + form["event"].value;
-                    form.reset();
-                    document.getElementById("listElem").appendChild(item);
-                } else {
-                    shown = true;
-                    document.getElementById("newItem").style.display = "block";
+                var row = document.createElement("tr");
+                for (str of ["date", "time", "event"]) {
+                    var input = document.getElementById(str);
+                    var col = document.createElement("td");
+                    col.innerHTML = input.value;
+                    if (str === "event")
+                    {
+                        col.style.textAlign = "left";
+                    }
+                    input.value = "";
+                    row.appendChild(col);
                 }
+                row.appendChild(document.createElement("td")); // filler item
+                var newItem = document.getElementById("newItem");
+                newItem.parentNode.insertBefore(row, newItem);
             }
         </script>
     </head>
     <body>
-        <h2>To Do List</h2>
-        <ul id="listElem"></ul>
-        <form id="newItem" style="display: none;">
-            <h4>New Item</h4>
-            Date:<br>
-            <input id="date" type="date"><br><br>
-            Time:<br>
-            <input id="time" type="time"><br><br>
-            Event:<br>
-            <input type="text" name="event" value="Party" >
-            <br><br>
-        </form> 
-        <button onclick="addItem()" style="font-size: 20px;">Add Item</button>
+        <div id="wrapper">
+            <h2>To Do List</h2>
+            <table id="list">
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Event</th>
+                    <th></th>
+                </tr>
+                <tr id="newItem">
+                    <td>
+                        <input id="date" type="date">
+                    </td>
+                    <td>
+                        <input id="time" type="time">
+                    </td>
+                    <td>
+                        <input id="event" type="text" size="50" maxlength="50">
+                    </td>
+                    <td>
+                        <button onclick="addItem()">Add New Item</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </body>
 </html>
