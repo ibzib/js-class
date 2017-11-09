@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+    <head>
+        <title>To Do List</title>
+        <script>
+            var shown = false;
+            function addItem() {
+                if (shown) {
+                    document.getElementById("newItem").style.display = "none";
+                    shown = false;
+                    var form = document.getElementById("newItem");
+                    var item = document.createElement("li");
+                    item.innerHTML = form["date"].value + " " + form["time"].value + " " + form["event"].value;
+                    form.reset();
+                    document.getElementById("listElem").appendChild(item);
+                } else {
+                    shown = true;
+                    document.getElementById("newItem").style.display = "block";
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <h2>To Do List</h2>
+        <ul id="listElem"></ul>
+        <form id="newItem" style="display: none;">
+            <h4>New Item</h4>
+            Date:<br>
+            <input id="date" type="date"><br><br>
+            Time:<br>
+            <input id="time" type="time"><br><br>
+            Event:<br>
+            <input type="text" name="event" value="Party" >
+            <br><br>
+        </form> 
+        <button onclick="addItem()" style="font-size: 20px;">Add Item</button>
+    </body>
+</html>

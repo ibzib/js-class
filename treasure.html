@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+    <head>
+        <script>
+            var ti = Math.floor(Math.random()*5);
+            var tj = Math.floor(Math.random()*5);
+            var grid = [];
+            var buttons = [];
+            var moveCount = 10;
+            var timeOuts = [];
+            function updateHP() {
+                document.getElementById("hp").innerHTML = "Moves remaining: " + moveCount;
+            }
+            function gameOver(messageStr) {
+                for (var i = 0; i < timeOuts.length; i++) {
+                    clearTimeout(timeOuts[i]);
+                }
+                var message = document.createElement("h3");
+                message.innerHTML = messageStr;
+                document.body.appendChild(message);
+                for (var i = 0; i < 5; i++) {
+                    for (var j = 0; j < 5; j++) {
+                        buttons[i][j].style.background = `rgb(255, ${grid[i][j]}, ${grid[i][j]})`;
+                        buttons[i][j].onclick = undefined;
+                    }
+                }
+            }
+            window.onload = function (){
+                updateHP();
+                for (var i = 0; i < 5; i++)
+                {
+                    grid[i] = [];
+                    buttons[i] = [];
+                }
+                var map = document.getElementById("map");
+                var colors = new Array();
+                function makeClosure(but,i,j) {
+                    return function() {
+                        but.style.background = `rgb(255, ${grid[i][j]}, ${grid[i][j]})`;
+                        moveCount--;
+                        updateHP();
+                        if (i == ti && j == tj) {
+                            gameOver("You win");
+                        } else if (moveCount == 0) {
+                            gameOver("You lose");
+                        } else {
+                            timeOuts.push(setTimeout(function() { but.style.background = ""; }, 2000));
+                        }
+                    };
+                }
+                for (var i = 0; i < 5; i++) {
+                    var row = document.createElement("tr");
+                    for (var j = 0; j < 5; j++) {
+                        var col = document.createElement("td");
+                        var but = document.createElement("button");
+                        but.style.width = but.style.height = "50px";
+                        but.onclick = makeClosure(but,i,j);
+                        var d = Math.abs(ti - i) + Math.abs(tj - j);
+                        grid[i][j] = 100 + 25*d;
+                        buttons[i][j] = but;
+                        col.appendChild(but);
+                        row.appendChild(col);
+                    }
+                    map.appendChild(row);
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <p id="hp"></p>
+        <table id="map"></table>
+    </body>
+</html>
