@@ -31,6 +31,7 @@
         }
         </style>
         <script>
+            var checkboxes = [];
             function addItem() {
                 var row = document.createElement("tr");
                 for (str of ["date", "time", "event"]) {
@@ -43,16 +44,26 @@
                     input.value = "";
                     row.appendChild(col);
                 }
-                row.appendChild(document.createElement("td")); // filler item
+                var checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.id = "checkbox" + checkboxes.length;
+                checkboxes.push(checkbox);
+                var checkboxElem = document.createElement("td");
+                checkboxElem.appendChild(checkbox);
+                row.appendChild(checkboxElem);
                 var newItem = document.getElementById("newItem");
                 newItem.parentNode.insertBefore(row, newItem);
             }
             function printList() {
                 var frame = window.frames["printFrame"];
                 frame.document.body.innerHTML = document.getElementById("list").outerHTML;
+                for (box of checkboxes) {
+                    frame.document.getElementById(box.id).checked = box.checked;
+                }
                 frame.document.getElementById("newItem").style.display = "none";
                 frame.window.focus();
                 frame.window.print();
+                frame.document.body.innerHTML = "";
             }
         </script>
     </head>
