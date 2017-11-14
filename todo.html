@@ -37,8 +37,7 @@
                     var input = document.getElementById(str);
                     var col = document.createElement("td");
                     col.innerHTML = input.value;
-                    if (str === "event")
-                    {
+                    if (str === "event") {
                         col.style.textAlign = "left";
                     }
                     input.value = "";
@@ -47,6 +46,13 @@
                 row.appendChild(document.createElement("td")); // filler item
                 var newItem = document.getElementById("newItem");
                 newItem.parentNode.insertBefore(row, newItem);
+            }
+            function printList() {
+                var frame = window.frames["printFrame"];
+                frame.document.body.innerHTML = document.getElementById("list").outerHTML;
+                frame.document.getElementById("newItem").style.display = "none";
+                frame.window.focus();
+                frame.window.print();
             }
         </script>
     </head>
@@ -75,6 +81,9 @@
                     </td>
                 </tr>
             </table>
+            <br>
+            <button onclick="printList()">Print List</button>
         </div>
+        <iframe name="printFrame" width="0" height="0" frameborder="0"></iframe>
     </body>
 </html>
